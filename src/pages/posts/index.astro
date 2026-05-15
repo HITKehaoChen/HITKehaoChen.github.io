@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const blogModules = import.meta.glob('/src/pages/posts/*.{md,mdx}', { eager: true });
+const blogPosts = Object.values(blogModules)
+  .filter(m => m.url && m.url !== '/posts/')
+  .sort((a, b) => new Date(b.frontmatter.pubDate) - new Date(a.frontmatter.pubDate));
+---
+
+<BaseLayout title="博客 · Kehao Chen">
+  <div class="container page">
+    <h1>博客文章</h1>
+    <div class="post-list">
+      {blogPosts.map(post => (
+        <a href={post.url} class="post-item">
+          <span class="title">{post.frontmatter.title}</span>
+          <span class="date">{post.frontmatter.pubDate}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
